@@ -42,3 +42,27 @@ with open('links_noticias.csv', mode='w', newline='', encoding='utf-8') as archi
     escritor.writerow(["Enlace"])
     for link in links:
         escritor.writerow([link])
+
+# Leectura del articulo
+def leer_articulo():
+    with open('links_noticias.csv', mode='r', encoding='utf-8') as archivo_csv:
+        lector = csv.reader(archivo_csv)
+        for i, fila in enumerate(lector, 1):
+            url = fila[0]
+            try:
+                response = requests.get(url, timeout=10)
+
+                if response.status_code == 200:
+                    soup = BeautifulSoup(response.text, 'html.parser')
+                    parrafos = soup.find_all(['p', 'h2', 'ul'])
+
+                    for p in parrafos:
+                        texto = p.get_text(strip=True)
+                        if texto:
+                            print(texto)
+                else:
+                    print(f"Error {response.status_code}")
+            except Exception as e:
+                print(f"Excepción al procesar la URL: {e}")
+
+leer_articulo()
