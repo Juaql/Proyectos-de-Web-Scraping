@@ -7,7 +7,7 @@ nombre_archivo = "series-tiempo-sqlite.zip"
 
 try:
     respuesta = requests.get(url, timeout=30)
-    respuesta.raise_for_status()  # Verifica si la solicitud fue exitosa
+    respuesta.raise_for_status()
 
     with open(nombre_archivo, "wb") as archivo:
         archivo.write(respuesta.content)
